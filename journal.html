@@ -325,7 +325,7 @@
 
 <!-- Events calendar -->
 <div class="week-chart" style="margin-bottom:2rem">
-  <h2>🗓 Ближайшие забеги России 2026</h2>
+  <h2>🗓 Running Community — забеги 2026</h2>
   <div id="eventsCalendar" style="margin-top:1rem"></div>
 </div>
 
@@ -490,60 +490,8 @@ function render() {
 
 // Events data
 const events = [
-  {date:'2026-02-21', name:'«Speed» Running Indoor Event', loc:'Москва', dist:'спринт, средние', type:'шоссе', url:'https://runc.run/', src:'runc'},
-  {date:'2026-04-05', name:'April Run', loc:'Москва', dist:'5 км', type:'шоссе', url:'https://runc.run/', src:'runc'},
-  {date:'2026-02-15', name:'Novgorod Ice', loc:'Великий Новгород', dist:'6/15/21 км', type:'трейл', url:'https://marathonec.ru/novgorod-ice-2/'},
-  {date:'2026-02-22', name:'Ladoga Winter Trail', loc:'Приозёрск', dist:'5–40 км', type:'трейл', url:'https://marathonec.ru/ladoga-winter-trail-2/'},
-  {date:'2026-02-22', name:'Полуниха трейл', loc:'Полуниха', dist:'5–40 км', type:'трейл', url:'https://marathonec.ru/polunixa-trejl/'},
-  {date:'2026-02-25', name:'Winter Altai Ultra-Trail', loc:'Тюнгур', dist:'21–81 км', type:'трейл', url:'https://marathonec.ru/winter-altai-ultra-trail-aut/'},
-  {date:'2026-03-01', name:'Luka Ultra Snow Trail', loc:'Ширяево', dist:'5–50 км', type:'трейл', url:'https://lukaultratrail.ru/'},
-  {date:'2026-03-01', name:'Onego Ice Ultra', loc:'Ялгора', dist:'5–105 км', type:'трейл', url:'https://marathonec.ru/onego-ice-ultra/'},
-  {date:'2026-03-08', name:'Весенний МарафонЪ 8 марта', loc:'Санкт-Петербург', dist:'5–63 км', type:'трейл', url:''},
-  {date:'2026-03-14', name:'Зимний горный трейл «Аврора»', loc:'Кандалакша', dist:'13–60 км', type:'трейл', url:'https://marathonec.ru/zimnij-gornyj-trejl-avrora/'},
-  {date:'2026-03-29', name:'Скоростная десятка PushkinRun', loc:'СПб', dist:'10 км', type:'шоссе', url:'https://pushkin-run.ru/10-2026'},
-  {date:'2026-03-29', name:'Ирәмәл Ярыш', loc:'Белорецк', dist:'5–27 км', type:'трейл', url:'https://marathonec.ru/iremel-yarish/'},
-  {date:'2026-04-04', name:'Бештаугорский Крест', loc:'Пятигорск', dist:'5–23 км', type:'трейл', url:'https://marathonec.ru/trail-beshtaugorsky-krest/'},
-  {date:'2026-04-10', name:'Dagestan Wild Trail', loc:'Махачкала', dist:'10–100 км', type:'трейл', url:'https://marathonec.ru/dagestan-wild-trail/'},
-  {date:'2026-04-19', name:'Волгоград Марафон', loc:'Волгоград', dist:'5–42 км', type:'шоссе', url:''},
-  {date:'2026-04-19', name:'Самарский космический полумарафон', loc:'Самара', dist:'до 21 км', type:'шоссе', url:'https://marathonec.ru/samarskij-kosmicheskij-polumarafon-2/'},
-  {date:'2026-04-19', name:'Новосибирский полумарафон', loc:'Новосибирск', dist:'5–21 км', type:'шоссе', url:'https://marathonec.ru/novosibirsky-vesenny-polumarafon/'},
-  {date:'2026-04-25', name:'Московский полумарафон', loc:'Москва', dist:'5/21 км', type:'шоссе', url:'https://marathonec.ru/moskovsky-polumarafon-gid/'},
-  {date:'2026-04-25', name:'Kavkaz.Run полумарафон', loc:'Пятигорск', dist:'до 21 км', type:'шоссе', url:'https://marathonec.ru/pyatigorskij-polumarafon-kavkaz-run-2/'},
-  {date:'2026-04-26', name:'Псковский марафон', loc:'Псков', dist:'до 42 км', type:'шоссе', url:'https://marathonec.ru/pskovskiy-marathon/'},
-  {date:'2026-05-01', name:'Тутаевский полумарафон', loc:'Тутаев', dist:'до 21 км', type:'шоссе', url:'https://marathonec.ru/tutaev-polumarafon/'},
-  {date:'2026-05-03', name:'Пискарёвский полумарафон', loc:'СПб', dist:'до 21 км', type:'шоссе', url:''},
-  {date:'2026-05-16', name:'O-Trail Марафон Алания', loc:'Кобан', dist:'10–42 км', type:'трейл', url:''},
-  {date:'2026-05-17', name:'Мышкинский полумарафон', loc:'Мышкин', dist:'до 21 км', type:'шоссе', url:'https://marathonec.ru/myshkin-polumarafon/'},
-  {date:'2026-05-22', name:'Alol Ultra Trail', loc:'Пустошка', dist:'5–180 км', type:'трейл', url:''},
-  {date:'2026-05-23', name:'Беги, герой!', loc:'Нижний Новгород', dist:'5–21 км', type:'шоссе', url:''},
-  {date:'2026-05-24', name:'City Trail Romashkovo', loc:'Москва', dist:'5–30 км', type:'трейл', url:'https://city-trail.ru/1'},
-  {date:'2026-05-31', name:'Переславский марафон', loc:'Переславль', dist:'до 42 км', type:'шоссе', url:'https://marathonec.ru/pereslavl-polumarafon/'},
-  {date:'2026-06-11', name:'Sport-Marafon Fest', loc:'Никола-Ленивец', dist:'10–100 км', type:'трейл', url:'https://marathonec.ru/sport-marafon-fest/'},
-  {date:'2026-06-12', name:'Здорово, Кострома!', loc:'Кострома', dist:'до 21 км', type:'шоссе', url:'https://marathonec.ru/kostroma-polumarafon/'},
-  {date:'2026-06-12', name:'Crazy Owl 50', loc:'Изборск', dist:'3–50 км', type:'трейл', url:'https://marathonec.ru/crazy-owl-50/'},
-  {date:'2026-06-21', name:'City Trail Butovo', loc:'Москва', dist:'5–30 км', type:'трейл', url:'https://city-trail.ru/2'},
-  {date:'2026-06-26', name:'Altai Ultra-Trail', loc:'Акташ', dist:'14–165 км', type:'трейл', url:'https://marathonec.ru/altai-ultra-trail/'},
-  {date:'2026-06-26', name:'Arkhyz Wild Trail', loc:'Архыз', dist:'15–65 км', type:'трейл', url:'https://marathonec.ru/arkhyz-wild-trail/'},
-  {date:'2026-06-28', name:'Угличский полумарафон', loc:'Углич', dist:'до 21 км', type:'шоссе', url:'https://marathonec.ru/uglich-polumarafon/'},
-  {date:'2026-07-03', name:'Caucasus Ultra Trail', loc:'Грозный', dist:'160–1000 км', type:'ультра', url:'https://marathonec.ru/caucasus-ultratrail-first-step/'},
-  {date:'2026-07-11', name:'Полумарафон «Сергиевым путём»', loc:'Сергиев-Посад', dist:'5–21 км', type:'шоссе', url:''},
-  {date:'2026-07-12', name:'Трейл «Шигирский идол»', loc:'Екатеринбург', dist:'10/21 км', type:'трейл', url:''},
-  {date:'2026-08-07', name:'Malidak Ultra', loc:'Белорецк', dist:'8–160 км', type:'трейл', url:'https://marathonec.ru/malidak-ultra/'},
-  {date:'2026-08-08', name:'Рыбинский полумарафон', loc:'Рыбинск', dist:'до 21 км', type:'шоссе', url:'https://marathonec.ru/rybinsk-polumarafon/'},
-  {date:'2026-08-09', name:'Марафон «Европа-Азия»', loc:'Екатеринбург', dist:'3–42 км', type:'шоссе', url:''},
-  {date:'2026-08-09', name:'СПб полумарафон «Северная столица»', loc:'СПб', dist:'10/21 км', type:'шоссе', url:'https://marathonec.ru/polumarafon-severnaya-stolica/'},
-  {date:'2026-08-22', name:'Ночной забег PushkinRun', loc:'СПб', dist:'5/10 км', type:'шоссе', url:''},
-  {date:'2026-08-23', name:'Полумарафон «Ростов Великий»', loc:'Ростов', dist:'до 21 км', type:'шоссе', url:'https://marathonec.ru/rostov-veliky-polumarafon/'},
-  {date:'2026-08-28', name:'Калужский космический марафон', loc:'Калуга', dist:'5–21 км', type:'шоссе', url:''},
-  {date:'2026-08-29', name:'Лахти трейл', loc:'Кандалакша', dist:'10–55 км', type:'трейл', url:''},
-  {date:'2026-09-05', name:'Пермский марафон', loc:'Пермь', dist:'2.5–42 км', type:'шоссе', url:''},
-  {date:'2026-09-06', name:'Oka River Trail', loc:'Выползово', dist:'5–50 км', type:'трейл', url:'https://okarivertrail.ru'},
-  {date:'2026-09-12', name:'Laser Night Run', loc:'Екатеринбург', dist:'3/10 км', type:'шоссе', url:''},
-  {date:'2026-09-26', name:'Ультрамарафон «Джейрах 8»', loc:'Армхи', dist:'4–75 км', type:'шоссе', url:'https://marathonec.ru/marathon-dzheirah/'},
-  {date:'2026-09-26', name:'Атомный трейл', loc:'Обнинск', dist:'5–30 км', type:'трейл', url:''},
-  {date:'2026-09-27', name:'Балтийский Марафон', loc:'СПб', dist:'5–63 км', type:'шоссе', url:''},
-  {date:'2026-10-24', name:'Трейл «Рубеж»', loc:'Ильинское', dist:'5–100 км', type:'трейл', url:''},
-  {date:'2026-12-13', name:'Новогодний марафон Sosnovka Goat', loc:'СПб', dist:'5–63 км', type:'трейл', url:''},
+  {date:'2026-02-21', name:'«Speed» Running Indoor Event', loc:'Москва', dist:'спринт, средние дистанции', type:'шоссе', url:'https://runc.run/'},
+  {date:'2026-04-05', name:'April Run', loc:'Москва', dist:'5 км', type:'шоссе', url:'https://runc.run/'},
 ];
 
 function renderEvents() {
