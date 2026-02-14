@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Run Journal</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+    min-height: 100dvh;
+    padding: 1.5rem;
+    padding-bottom: 6rem;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  .header h1 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff5f1f, #ffcc00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .header .streak {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .header .streak span {
+    color: #ff5f1f;
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+
+  /* Stats summary */
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  .summary-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .summary-card .value {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #ff5f1f;
+  }
+  .summary-card .label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.25rem;
+  }
+
+  /* Weekly chart */
+  .week-chart {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .week-chart h2 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 1rem;
+  }
+  .bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    height: 100px;
+  }
+  .bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .bar {
+    width: 100%;
+    max-width: 32px;
+    border-radius: 6px 6px 2px 2px;
+    background: linear-gradient(to top, #ff5f1f, #ffcc00);
+    min-height: 4px;
+    transition: height 0.3s;
+  }
+  .bar.empty {
+    background: rgba(255,255,255,0.08);
+    height: 4px !important;
+  }
+  .bar-label {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+  }
+  .bar-value {
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Log entries */
+  .log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .log-header h2 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .entry {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .entry-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .entry-date {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .entry-distance {
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  .entry-right {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+  }
+  .entry-stat {
+    text-align: center;
+  }
+  .entry-stat .val {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.8);
+  }
+  .entry-stat .lbl {
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* FAB */
+  .fab {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff5f1f, #ff9a56);
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 300;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(255,95,31,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  .fab:active { transform: scale(0.9); }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 10;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: #1a1a1a;
+    border-radius: 20px 20px 0 0;
+    padding: 2rem 1.5rem;
+    width: 100%;
+    max-width: 500px;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .modal h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+  }
+  .field {
+    margin-bottom: 1.25rem;
+  }
+  .field label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.5rem;
+  }
+  .field input, .field textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .field input:focus, .field textarea:focus {
+    border-color: #ff5f1f;
+  }
+  .field textarea { resize: none; height: 60px; }
+  .row { display: flex; gap: 0.75rem; }
+  .row .field { flex: 1; }
+
+  .btn-save {
+    width: 100%;
+    padding: 0.9rem;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ff5f1f, #ff9a56);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 0.5rem;
+  }
+
+  /* Strava badge */
+  .strava-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(252,82,0,0.1);
+    border: 1px solid rgba(252,82,0,0.2);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 2rem;
+    cursor: pointer;
+  }
+  .strava-badge svg { width: 20px; height: 20px; }
+  .strava-badge .text {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+  }
+  .strava-badge .text span {
+    color: #fc5200;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🏃 Run Journal</h1>
+  <div class="streak">серия<br><span id="streak">0</span> дней</div>
+</div>
+
+<!-- Strava placeholder -->
+<div class="strava-badge" onclick="alert('Синхронизация со Strava — скоро!')">
+  <svg viewBox="0 0 24 24" fill="#fc5200"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>
+  <div class="text">Подключить <span>Strava</span> →</div>
+</div>
+
+<div class="summary">
+  <div class="summary-card">
+    <div class="value" id="totalKm">0</div>
+    <div class="label">км всего</div>
+  </div>
+  <div class="summary-card">
+    <div class="value" id="totalRuns">0</div>
+    <div class="label">тренировок</div>
+  </div>
+  <div class="summary-card">
+    <div class="value" id="avgPace">—</div>
+    <div class="label">ср. темп</div>
+  </div>
+</div>
+
+<div class="week-chart">
+  <h2>Эта неделя</h2>
+  <div class="bars" id="weekBars"></div>
+</div>
+
+<div class="log-header">
+  <h2>Тренировки</h2>
+</div>
+<div id="logEntries"></div>
+
+<button class="fab" onclick="openModal()">+</button>
+
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h2>Новая тренировка</h2>
+    <div class="field">
+      <label>Дата</label>
+      <input type="date" id="fDate">
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>Дистанция (км)</label>
+        <input type="number" step="0.1" id="fDist" placeholder="5.0">
+      </div>
+      <div class="field">
+        <label>Время (мин)</label>
+        <input type="number" id="fTime" placeholder="30">
+      </div>
+    </div>
+    <div class="field">
+      <label>Заметки</label>
+      <textarea id="fNotes" placeholder="Как прошла пробежка?"></textarea>
+    </div>
+    <button class="btn-save" onclick="saveEntry()">Сохранить</button>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'runjournal_entries';
+
+function getEntries() {
+  return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+}
+
+function saveEntries(entries) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}
+
+function openModal() {
+  document.getElementById('fDate').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('fDist').value = '';
+  document.getElementById('fTime').value = '';
+  document.getElementById('fNotes').value = '';
+  document.getElementById('modal').classList.add('active');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal'))
+    document.getElementById('modal').classList.remove('active');
+}
+
+function saveEntry() {
+  const dist = parseFloat(document.getElementById('fDist').value);
+  const time = parseInt(document.getElementById('fTime').value);
+  const date = document.getElementById('fDate').value;
+  const notes = document.getElementById('fNotes').value.trim();
+  if (!dist || !time || !date) return;
+
+  const entries = getEntries();
+  entries.unshift({ date, dist, time, notes });
+  entries.sort((a, b) => b.date.localeCompare(a.date));
+  saveEntries(entries);
+  document.getElementById('modal').classList.remove('active');
+  render();
+}
+
+function deleteEntry(idx) {
+  const entries = getEntries();
+  entries.splice(idx, 1);
+  saveEntries(entries);
+  render();
+}
+
+function formatPace(dist, time) {
+  if (!dist) return '—';
+  const pace = time / dist;
+  const min = Math.floor(pace);
+  const sec = Math.round((pace - min) * 60);
+  return min + ':' + String(sec).padStart(2, '0');
+}
+
+function render() {
+  const entries = getEntries();
+  const totalKm = entries.reduce((s, e) => s + e.dist, 0);
+  const totalTime = entries.reduce((s, e) => s + e.time, 0);
+
+  document.getElementById('totalKm').textContent = totalKm.toFixed(1);
+  document.getElementById('totalRuns').textContent = entries.length;
+  document.getElementById('avgPace').textContent = entries.length ? formatPace(totalKm, totalTime) : '—';
+
+  // Streak
+  let streak = 0;
+  const today = new Date().toISOString().slice(0, 10);
+  const dates = new Set(entries.map(e => e.date));
+  let d = new Date();
+  // allow today or yesterday as start
+  if (!dates.has(d.toISOString().slice(0, 10))) {
+    d.setDate(d.getDate() - 1);
+  }
+  while (dates.has(d.toISOString().slice(0, 10))) {
+    streak++;
+    d.setDate(d.getDate() - 1);
+  }
+  document.getElementById('streak').textContent = streak;
+
+  // Week bars
+  const days = ['пн','вт','ср','чт','пт','сб','вс'];
+  const now = new Date();
+  const dow = (now.getDay() + 6) % 7; // 0=Mon
+  const monday = new Date(now);
+  monday.setDate(monday.getDate() - dow);
+
+  let weekData = [];
+  let maxDist = 0;
+  for (let i = 0; i < 7; i++) {
+    const dd = new Date(monday);
+    dd.setDate(dd.getDate() + i);
+    const key = dd.toISOString().slice(0, 10);
+    const km = entries.filter(e => e.date === key).reduce((s, e) => s + e.dist, 0);
+    weekData.push({ day: days[i], km });
+    if (km > maxDist) maxDist = km;
+  }
+
+  const barsHtml = weekData.map(w => {
+    const h = maxDist > 0 ? Math.max(4, (w.km / maxDist) * 80) : 4;
+    const empty = w.km === 0 ? 'empty' : '';
+    return `<div class="bar-col">
+      <div class="bar-value">${w.km > 0 ? w.km.toFixed(1) : ''}</div>
+      <div class="bar ${empty}" style="height:${h}px"></div>
+      <div class="bar-label">${w.day}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('weekBars').innerHTML = barsHtml;
+
+  // Entries
+  const months = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+  const logHtml = entries.map((e, i) => {
+    const dd = new Date(e.date + 'T00:00:00');
+    const dateStr = dd.getDate() + ' ' + months[dd.getMonth()];
+    return `<div class="entry">
+      <div class="entry-left">
+        <div class="entry-date">${dateStr}</div>
+        <div class="entry-distance">${e.dist.toFixed(1)} км</div>
+        ${e.notes ? `<div style="font-size:0.75rem;color:rgba(255,255,255,0.35);margin-top:2px">${e.notes}</div>` : ''}
+      </div>
+      <div class="entry-right">
+        <div class="entry-stat"><div class="val">${e.time}'</div><div class="lbl">время</div></div>
+        <div class="entry-stat"><div class="val">${formatPace(e.dist, e.time)}</div><div class="lbl">темп</div></div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('logEntries').innerHTML = logHtml || '<div style="text-align:center;color:rgba(255,255,255,0.2);padding:2rem">Пока пусто. Жми + и записывай первую пробежку!</div>';
+}
+
+render();
+</script>
+</body>
+</html>
