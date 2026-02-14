@@ -490,6 +490,8 @@ function render() {
 
 // Events data
 const events = [
+  {date:'2026-02-21', name:'«Speed» Running Indoor Event', loc:'Москва', dist:'спринт, средние', type:'шоссе', url:'https://runc.run/', src:'runc'},
+  {date:'2026-04-05', name:'April Run', loc:'Москва', dist:'5 км', type:'шоссе', url:'https://runc.run/', src:'runc'},
   {date:'2026-02-15', name:'Novgorod Ice', loc:'Великий Новгород', dist:'6/15/21 км', type:'трейл', url:'https://marathonec.ru/novgorod-ice-2/'},
   {date:'2026-02-22', name:'Ladoga Winter Trail', loc:'Приозёрск', dist:'5–40 км', type:'трейл', url:'https://marathonec.ru/ladoga-winter-trail-2/'},
   {date:'2026-02-22', name:'Полуниха трейл', loc:'Полуниха', dist:'5–40 км', type:'трейл', url:'https://marathonec.ru/polunixa-trejl/'},
@@ -546,6 +548,7 @@ const events = [
 
 function renderEvents() {
   const now = new Date().toISOString().slice(0,10);
+  events.sort((a,b) => a.date.localeCompare(b.date));
   const upcoming = events.filter(e => e.date >= now).slice(0, 8);
   const months = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
   
