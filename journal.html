@@ -323,6 +323,26 @@
   <div class="bars" id="weekBars"></div>
 </div>
 
+<!-- Goal & Training Plan -->
+<div class="week-chart" style="margin-bottom:2rem;border:1px solid rgba(255,95,31,0.2)">
+  <h2>🎯 Цель: April Run — 5 апреля, 5 км</h2>
+  <div style="display:flex;gap:1.5rem;margin:1rem 0">
+    <div style="text-align:center">
+      <div style="font-size:1.8rem;font-weight:900;color:#ff5f1f" id="daysLeft">0</div>
+      <div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase">дней до старта</div>
+    </div>
+    <div style="text-align:center">
+      <div style="font-size:1.8rem;font-weight:900;color:#ffcc00" id="currentWeek">1</div>
+      <div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase">неделя из 7</div>
+    </div>
+  </div>
+</div>
+
+<div class="week-chart" style="margin-bottom:2rem">
+  <h2>📋 Программа тренировок (7 недель → 5 км)</h2>
+  <div id="trainingPlan" style="margin-top:1rem"></div>
+</div>
+
 <!-- Events calendar -->
 <div class="week-chart" style="margin-bottom:2rem">
   <h2>🗓 Running Community — забеги 2026</h2>
@@ -491,7 +511,7 @@ function render() {
 // Events data
 const events = [
   {date:'2026-02-21', name:'«Speed» Running Indoor Event', loc:'Москва', dist:'спринт, средние дистанции', type:'шоссе', url:'https://runc.run/'},
-  {date:'2026-04-05', name:'April Run', loc:'Москва', dist:'5 км', type:'шоссе', url:'https://runc.run/'},
+  {date:'2026-04-05', name:'April Run ⭐', loc:'Москва', dist:'5 км', type:'шоссе', url:'https://runc.run/', goal:true},
 ];
 
 function renderEvents() {
@@ -549,6 +569,111 @@ function showAllEvents() {
   document.getElementById('eventsCalendar').innerHTML = html;
 }
 
+// Goal countdown
+const goalDate = new Date('2026-04-05');
+const planStart = new Date('2026-02-16'); // Monday of week 1
+const today = new Date();
+const daysLeft = Math.max(0, Math.ceil((goalDate - today) / 86400000));
+document.getElementById('daysLeft').textContent = daysLeft;
+const weekNum = Math.min(7, Math.max(1, Math.ceil((today - planStart) / 604800000 + 1)));
+document.getElementById('currentWeek').textContent = weekNum;
+
+// Training plan
+const plan = [
+  {week:1, start:'16 фев', theme:'Втягивание', days:[
+    {d:'Пн', t:'Отдых'},
+    {d:'Вт', t:'Лёгкий бег 15 мин (бег/ходьба 2:1)'},
+    {d:'Ср', t:'Отдых'},
+    {d:'Чт', t:'Лёгкий бег 15 мин (бег/ходьба 2:1)'},
+    {d:'Пт', t:'Отдых'},
+    {d:'Сб', t:'Быстрая ходьба 30 мин'},
+    {d:'Вс', t:'Лёгкий бег 20 мин (бег/ходьба 3:1)'},
+  ]},
+  {week:2, start:'23 фев', theme:'Набор объёма', days:[
+    {d:'Пн', t:'Отдых'},
+    {d:'Вт', t:'Лёгкий бег 20 мин'},
+    {d:'Ср', t:'Силовая (приседания, планка, выпады) 20 мин'},
+    {d:'Чт', t:'Лёгкий бег 20 мин'},
+    {d:'Пт', t:'Отдых'},
+    {d:'Сб', t:'Лёгкий бег 25 мин'},
+    {d:'Вс', t:'Длительный бег 30 мин (медленно)'},
+  ]},
+  {week:3, start:'2 мар', theme:'Ритм', days:[
+    {d:'Пн', t:'Отдых'},
+    {d:'Вт', t:'Лёгкий бег 25 мин'},
+    {d:'Ср', t:'Силовая + кор 25 мин'},
+    {d:'Чт', t:'Интервалы: 5×1 мин быстро / 2 мин трусцой'},
+    {d:'Пт', t:'Отдых'},
+    {d:'Сб', t:'Лёгкий бег 25 мин'},
+    {d:'Вс', t:'Длительный бег 35 мин'},
+  ]},
+  {week:4, start:'9 мар', theme:'Первые 5К', days:[
+    {d:'Пн', t:'Отдых'},
+    {d:'Вт', t:'Лёгкий бег 25 мин'},
+    {d:'Ср', t:'Силовая 20 мин'},
+    {d:'Чт', t:'Темповый бег 20 мин (комфортно-быстро)'},
+    {d:'Пт', t:'Отдых'},
+    {d:'Сб', t:'Лёгкий бег 20 мин'},
+    {d:'Вс', t:'Тестовый забег 5 км (любой темп)'},
+  ]},
+  {week:5, start:'16 мар', theme:'Укрепление', days:[
+    {d:'Пн', t:'Отдых'},
+    {d:'Вт', t:'Лёгкий бег 30 мин'},
+    {d:'Ср', t:'Силовая + кор 25 мин'},
+    {d:'Чт', t:'Интервалы: 6×1 мин быстро / 1.5 мин трусцой'},
+    {d:'Пт', t:'Отдых'},
+    {d:'Сб', t:'Лёгкий бег 25 мин'},
+    {d:'Вс', t:'Длительный бег 40 мин'},
+  ]},
+  {week:6, start:'23 мар', theme:'Скорость', days:[
+    {d:'Пн', t:'Отдых'},
+    {d:'Вт', t:'Лёгкий бег 30 мин'},
+    {d:'Ср', t:'Силовая 20 мин'},
+    {d:'Чт', t:'Темповый бег 25 мин'},
+    {d:'Пт', t:'Отдых'},
+    {d:'Сб', t:'Интервалы: 4×800м / отдых 2 мин'},
+    {d:'Вс', t:'Длительный бег 35 мин'},
+  ]},
+  {week:7, start:'30 мар', theme:'Подводка к старту', days:[
+    {d:'Пн', t:'Отдых'},
+    {d:'Вт', t:'Лёгкий бег 20 мин'},
+    {d:'Ср', t:'Лёгкие интервалы: 4×30 сек ускорения'},
+    {d:'Чт', t:'Лёгкий бег 15 мин'},
+    {d:'Пт', t:'Отдых (растяжка)'},
+    {d:'Сб', t:'Лёгкая трусца 10 мин + разминка'},
+    {d:'Вс', t:'🏁 APRIL RUN — 5 КМ!'},
+  ]},
+];
+
+function renderPlan() {
+  const html = plan.map(w => {
+    const isCurrent = w.week === weekNum;
+    const border = isCurrent ? 'border:1px solid #ff5f1f;' : 'border:1px solid rgba(255,255,255,0.06);';
+    const daysHtml = w.days.map(d => {
+      const isRest = d.t === 'Отдых';
+      const color = isRest ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.75)';
+      return `<div style="display:flex;gap:0.5rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+        <div style="min-width:24px;font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.4)">${d.d}</div>
+        <div style="font-size:0.75rem;color:${color}">${d.t}</div>
+      </div>`;
+    }).join('');
+    
+    return `<details ${isCurrent ? 'open' : ''} style="margin-bottom:0.75rem">
+      <summary style="cursor:pointer;${border}border-radius:10px;padding:0.75rem 1rem;background:rgba(255,255,255,0.03);list-style:none;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span style="font-weight:700;font-size:0.85rem">Неделя ${w.week}</span>
+          <span style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:0.5rem">${w.start} · ${w.theme}</span>
+        </div>
+        ${isCurrent ? '<span style="font-size:0.6rem;background:#ff5f1f;color:#fff;padding:2px 8px;border-radius:10px">Сейчас</span>' : ''}
+      </summary>
+      <div style="padding:0.5rem 1rem">${daysHtml}</div>
+    </details>`;
+  }).join('');
+  
+  document.getElementById('trainingPlan').innerHTML = html;
+}
+
+renderPlan();
 renderEvents();
 render();
 </script>
