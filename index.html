@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>RUN</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bg-glow {
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,95,31,0.3) 0%, transparent 70%);
+    top: 10%; left: 50%; transform: translateX(-50%);
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.6; }
+    50% { transform: translateX(-50%) scale(1.2); opacity: 1; }
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .emoji-top {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .main-text {
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: linear-gradient(135deg, #ff5f1f, #ff9a56, #ffcc00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+
+  .sub-text {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.5);
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+  }
+
+  .quote {
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.5;
+    max-width: 320px;
+    margin: 0 auto 2rem;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .quote span {
+    color: #ff5f1f;
+  }
+
+  .stats {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #ff5f1f;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.25rem;
+  }
+
+  .bottom-line {
+    position: absolute;
+    bottom: 3rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+  }
+
+  .divider {
+    width: 40px;
+    height: 3px;
+    background: #ff5f1f;
+    margin: 0 auto 2rem;
+    border-radius: 2px;
+  }
+</style>
+<script>
+  const quotes = [
+    ["Тебе не нужна мотивация.", "Тебе нужна дисциплина."],
+    ["Боль временна.", "Гордость — навсегда."],
+    ["Ты бежишь не от чего-то.", "Ты бежишь к себе."],
+    ["Каждый шаг —", "это выбор быть сильнее."],
+    ["Сегодня ты делаешь то,", "что завтра не сможешь пропустить."],
+    ["Ноги устали?", "Голова — нет. Беги."],
+    ["Лень — это голос,", "который ты сегодня не слушаешь."],
+  ];
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const q = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById('q1').textContent = q[0];
+    document.getElementById('q2').textContent = q[1];
+
+    // Date
+    const now = new Date();
+    const days = ['ВС','ПН','ВТ','СР','ЧТ','ПТ','СБ'];
+    const months = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+    document.getElementById('date').textContent =
+      days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()];
+  });
+</script>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <div class="content">
+    <div class="emoji-top">🔥</div>
+    <div class="main-text">Беги</div>
+    <div class="sub-text" id="date"></div>
+    <div class="divider"></div>
+    <div class="quote">
+      <span id="q1"></span><br>
+      <span id="q2" style="color: rgba(255,255,255,0.85);"></span>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">5K</div>
+        <div class="stat-label">Цель</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">∞</div>
+        <div class="stat-label">Потенциал</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-line">no excuses</div>
+</body>
+</html>
